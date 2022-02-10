@@ -8,7 +8,7 @@ export ZSH="/Users/julianbaumgartner/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="af-magic"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -73,10 +73,11 @@ ZSH_THEME="af-magic"
 plugins=(
 	git
 	zsh-autosuggestions
+	zsh-autocomplete
+	colored-man-pages
 )
 
 source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -105,6 +106,8 @@ source $ZSH/oh-my-zsh.sh
 
 ## EXTRA
 export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+export GDAL_LIBRARY_PATH="/opt/local/lib/libgdal.dylib"
+export GEOS_LIBRARY_PATH="/opt/local/lib/libgeos_c.dylib"
 ZSH_DISABLE_COMPFIX=true
 
 
@@ -134,8 +137,25 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 
+function gitreb() {
+	if ! git stash | grep "No local changes to save"; then
+        STASHED=true
+	fi
+
+	git stash &&
+	git fetch upstream &&
+	git rebase upstream/master 
+
+	if [ "$STASHED" = true ]
+        then
+	    git stash apply
+	fi
+}
+
 function makeenv() {
-	virtualenv -p /usr/local/opt/python@3.8/bin/python3.8 venv
+	virtualenv -p /usr/local/opt/python@3.8/bin/python3.8 venv &&
+        source venv/bin/activate &&
+        pip install ipython black isort flake8 autoflake
 } 
 
 function startenv () {
@@ -143,10 +163,11 @@ function startenv () {
 }
 
 
-function cleanshuup () {
-	isort . &&
-	black . &&
-	flak8 .
+function cleancode () {
+	autoflake --recursive --in-place --remove-all-unused-imports . &&
+        isort . &&
+	black -l 88 --preview . &&
+	flake8 --max-line-length 88 . &&
 }
 
 function mkgitdir (){
@@ -166,24 +187,49 @@ function sleeptime (){
 	sudo shutdown -s now
 }
 
+function gitcom () {
+        git add . &&
+        git commit -m 'Update'
 
+if [ -z "$(git status --porcelain)" ]; then 
+        git reset --soft HEAD~1 &&
+        git commit --all --amend --no-edit
+        echo 'Commit and rebase successful'
+else 
+  echo 'Error! Working tree not clean.'
+fi
+}
 
 # ALIAS
 alias xbrew='/usr/local/Homebrew/bin/brew'
 alias cdd='cd ../'
 alias cddd='cd ../../'
 alias cdddd='cd ../../../'
+alias cat='bat'
 alias gs="git status"
 alias ga="git add"
 alias gaa="git add ."
 alias gr='git rebase -i HEAD~2'
 alias gcu='git commit -m "Update"'
 alias prettygit="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias ll='ls -lah -G'
-alias ls='ls -lah -G'
+alias ll='exa --all --long --header'
+alias ls='exa --all --long --header'
+alias ltt='tree -a -s --filelimit 10'
+alias lt='exa --all --long --header --inode --git --tree --level=3'
 alias runserv='python manage.py runserver'
 alias startenv='source venv/bin/activate'
+alias ddshell='python manage.py shell_plus --print-sql --ipython'
+alias dshell='python manage.py shell -i ipython'
 alias c='clear'
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/julianbaumgartner/Desktop/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/julianbaumgartner/Desktop/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/julianbaumgartner/Desktop/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/julianbaumgartner/Desktop/google-cloud-sdk/completion.zsh.inc'; fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
