@@ -104,15 +104,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-## EXTRA
+## EXTRA M1 settings
 export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
 export GDAL_LIBRARY_PATH="/opt/local/lib/libgdal.dylib"
 export GEOS_LIBRARY_PATH="/opt/local/lib/libgeos_c.dylib"
 ZSH_DISABLE_COMPFIX=true
 
 
-####### PERSONAL #####
-
+##### PERSONAL #####
 XBREW_PATH="/usr/local/homebrew/bin"
 BREW_PATH="/opt/homebrew/bin"
 PSQL_PATH="/Applications/Postgres.app/Contents/Versions/latest/bin"
@@ -126,17 +125,17 @@ if [ "${arch_name}" = "arm64" ]; then
     export PATH="$BREW_PATH:$PATH:$PSQL_PATH"
     fi
 
-#export PATH="$BREW_PATH:$PATH:$PSQL_PATH"
 
 # useful Python C-library compliation flags
 export LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib"
 export CPPFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix zlib)/include"
 
+# NVM settings
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-
+# Custom functions
 function gitreb() {
 	if ! git stash | grep "No local changes to save"; then
         STASHED=true
@@ -222,7 +221,7 @@ alias ddshell='python manage.py shell_plus --print-sql --ipython'
 alias dshell='python manage.py shell -i ipython'
 alias c='clear'
 
-
+# Fuzzy finder for zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # The next line updates PATH for the Google Cloud SDK.
