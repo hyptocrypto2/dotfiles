@@ -72,6 +72,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
+        gh
+	docker
+	docker-compose
 	zsh-autosuggestions
 	zsh-autocomplete
 	colored-man-pages
@@ -104,51 +107,70 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-## EXTRA M1 settings
+## EXTRA
 export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
 export GDAL_LIBRARY_PATH="/opt/local/lib/libgdal.dylib"
 export GEOS_LIBRARY_PATH="/opt/local/lib/libgeos_c.dylib"
 ZSH_DISABLE_COMPFIX=true
 
 
-##### PERSONAL #####
+####### PERSONAL #####
+
 XBREW_PATH="/usr/local/homebrew/bin"
 BREW_PATH="/opt/homebrew/bin"
 PSQL_PATH="/Applications/Postgres.app/Contents/Versions/latest/bin"
+JAVA_PATH="/usr/local/homebrew/opt/openjdk/bin"
 
 ### SET RIGHT BREW PATH FOR ARCH TYPE ###
 arch_name="$(uname -m)"
 if [ "${arch_name}" = "x86_64" ]; then
-    export PATH="$XBREW_PATH:$PATH:$PSQL_PATH"
+    export PATH="$XBREW_PATH:$PATH:$PSQL_PATH:$JAVA_PATH"
     fi 
 if [ "${arch_name}" = "arm64" ]; then
-    export PATH="$BREW_PATH:$PATH:$PSQL_PATH"
+    export PATH="$BREW_PATH:$PATH:$PSQL_PATH:$JAVA_PATH"
     fi
 
+#export PATH="$BREW_PATH:$PATH:$PSQL_PATH"
 
 # useful Python C-library compliation flags
 export LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib"
 export CPPFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix zlib)/include"
 
-# NVM settings
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# Custom functions
+
+function makepr() {
+        gh pr create --fill && gh pr view -w
+}
+
+function daycare() {
+        cd ~/dev/daycare_owl && startenv && cd app && code .
+}
+
+
 function gitreb() {
-	if ! git stash | grep "No local changes to save"; then
-        STASHED=true
+	STASHED=false
+	if output=$(git status --porcelain) && ! [ -z "$output" ]; then
+            echo "Stashing changes"
+	    STASHED=true
+            git stash -q  --include-untracked
+	else
+            echo "Working Tree Clean"
 	fi
 
-	git stash &&
-	git fetch upstream &&
-	git rebase upstream/master 
+	MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+	git fetch -q origin &&
+	echo "Rebaseing on origin/$MAIN_BRANCH"
+	git rebase -q  "origin/$MAIN_BRANCH"
 
-	if [ "$STASHED" = true ]
-        then
-	    git stash apply
+	if "$STASHED"
+	    then
+    	    echo "Poping stashed changes"
+            git stash pop -q
 	fi
+
 }
 
 function makeenv() {
@@ -163,10 +185,9 @@ function startenv () {
 
 
 function cleancode () {
-	autoflake --recursive --in-place --remove-all-unused-imports . &&
+	flake8 . &&
         isort . &&
-	black -l 88 --preview . &&
-	flake8 --max-line-length 88 . &&
+	black . &&
 }
 
 function mkgitdir (){
@@ -221,7 +242,7 @@ alias ddshell='python manage.py shell_plus --print-sql --ipython'
 alias dshell='python manage.py shell -i ipython'
 alias c='clear'
 
-# Fuzzy finder for zsh
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # The next line updates PATH for the Google Cloud SDK.
