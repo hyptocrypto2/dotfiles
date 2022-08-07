@@ -1,0 +1,100 @@
+{
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "workbench.colorTheme": "Material Theme High Contrast",
+    "editor.tokenColorCustomizations": {
+        "[Material Theme High Contrast]": {
+            "textMateRules": [
+                {
+                    "name": "Import Name",
+                    "scope": "entity.other.inherited-class.python",
+                    "settings": {
+                        "foreground": "#f7ff5c"
+                    }
+                },
+                {
+                    "name": "Import Name",
+                    "scope": "entity.name.namespace",
+                    "settings": {
+                        "foreground": "#f7ff5c"
+                    }
+                },
+                {
+                    "name": "Class Name",
+                    "scope": "entity.name.type.class",
+                    "settings": {
+                        "fontStyle": "underline",
+                        "foreground": "#7ab583"
+                    }
+                },
+                {
+                    "name": "Decorator definition decorator",
+                    "scope": "punctuation.definition.decorator.python",
+                    "settings": {
+                        "foreground": "#F92672",
+                        "underline": true,
+                    }
+                },
+                {
+                    "name": "Meta function-call",
+                    "scope": "meta.function-call.generic.python",
+                    "settings": {
+                        "foreground": "#66D9EF"
+                    }
+                },
+                {
+                    "name": "Storage type function async",
+                    "scope": "storage.type.function.async.python",
+                    "settings": {
+                        "foreground": "#F92672",
+                    }
+                },
+                {
+                    "name": "Punctuation separator period",
+                    "scope": "punctuation.separator.period.python",
+                    "settings": {
+                        "foreground": "#F8F8F2",
+                    }
+                },
+                {
+                    "name": "Entity name function decorator",
+                    "scope": "entity.name.function.decorator.python",
+                    "settings": {
+                        "foreground": "#66D9EF",
+                    }
+                },
+                {
+                    "name": "Entity name type class",
+                    "scope": "entity.name.type.class.python",
+                    "settings": {
+                        "fontStyle": ""
+                    }
+                },
+                {
+                    "name": "Entity other inherited-class",
+                    "scope": "entity.other.inherited-class.python",
+                    "settings": {
+                        "fontStyle": "italic"
+                    }
+                },
+                {
+                    "name": "Support type python",
+                    "scope": "support.type.python",
+                    "settings": {
+                        "fontStyle": ""
+                    }
+                },
+                {
+                    "name": "String quoted docstring multi python",
+                    "scope": "string.quoted.docstring.multi.python",
+                    "settings": {
+                        "foreground": "#88846F",
+                    }
+                }
+            ]
+        }
+    },
+    "workbench.colorCustomizations": {
+        "[Material Theme High Contrast]": {}
+    },
+}
