@@ -1,10 +1,31 @@
 {
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "files.insertFinalNewline": true,
+    "workbench.editor.untitled.hint": "hidden",
+    "python.defaultInterpreterPath": "./venv/bin/python",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "cSpell.userWords": [
+        "yakimaherald"
+    ],
     "workbench.colorTheme": "Material Theme High Contrast",
+    "editor.suggestSelection": "first",
+    "html.suggest.html5": true,
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "editor.tokenColorCustomizations": {
         "[Material Theme High Contrast]": {
             "textMateRules": [
+                {
+                    "name": "",
+                    "scope": "keyword.control.flow.python",
+                    "settings":{
+                        "foreground": "#68bbf3", "fontStyle": "italic"
+                    }
+                },
                 {
                     "name": "Import Name",
                     "scope": "entity.other.inherited-class.python",
@@ -94,7 +115,58 @@
             ]
         }
     },
-    "workbench.colorCustomizations": {
-        "[Material Theme High Contrast]": {}
+    "html.format.indentInnerHtml": true,
+    "workbench.editor.showTabs": false,
+    "workbench.editor.enablePreview": false,
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
     },
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.py$",
+                "cmd": "black \"${file}\""
+            },
+            {
+                "match": "\\.py$",
+                "cmd": "autoflake --in-place --remove-all-unused-imports \"${file}\""
+            }
+        ]
+    },
+    "terminal.explorerKind": "external",
+    "terminal.external.linuxExec": "",
+    "terminal.external.osxExec": "",
+    "terminal.external.windowsExec": "",
+    "terminal.integrated.allowChords": false,
+    "terminal.integrated.altClickMovesCursor": false,
+    "html.format.indentHandlebars": true,
+"files.associations": {
+    "**/*.html": "html",
+    "**/templates/**/*.html": "django-html",
+    "**/templates/**/*": "django-txt",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+},
+"emmet.includeLanguages": {
+    "django-html": "html",
+    "javascript": "javascriptreact"
+},
+"beautify.language": {
+    "html": [
+        "htm",
+        "html",
+        "django-html"
+    ]
+},
+"[django-html]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
+},
+"python.analysis.diagnosticSeverityOverrides": {
+    "reportOptionalMemberAccess": "none",
+    "reportOptionalSubscript": "none",
+},
+"python.formatting.provider": "black",
+"cSpell.enableFiletypes": [
+    "django-html"
+]
 }
+
