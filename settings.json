@@ -20,10 +20,10 @@
         "[Material Theme High Contrast]": {
             "textMateRules": [
                 {
-                    "name": "",
+                    "name": "Keywords",
                     "scope": "keyword.control.flow.python",
                     "settings":{
-                        "foreground": "#68bbf3", "fontStyle": "italic"
+                        "foreground": "#f36868", "fontStyle": "italic"
                     }
                 },
                 {
