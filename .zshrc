@@ -72,7 +72,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-        gh
+    gh
 	docker
 	docker-compose
 	zsh-autosuggestions
@@ -140,6 +140,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+
 function shellconf() {
         vim ~/.zshrc && source ~/.zshrc
 }
@@ -154,73 +155,98 @@ function daycare() {
 
 
 function gitreb() {
-	STASHED=false
-	if output=$(git status --porcelain) && ! [ -z "$output" ]; then
+        if output=$(git status --porcelain) && ! [ -z "$output" ]; then
             echo "Stashing changes"
-	    STASHED=true
+            STASHED=true
             git stash -q  --include-untracked
-	else
+        else
             echo "Working Tree Clean"
-	fi
+			STASHED=false
+        fi
 
-	MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
-	git fetch -q origin &&
-	echo "Rebaseing on origin/$MAIN_BRANCH"
-	git rebase -q  "origin/$MAIN_BRANCH"
+        MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+        git fetch -q origin &&
+        echo "Rebaseing on origin/$MAIN_BRANCH"
+        git rebase -q  "origin/$MAIN_BRANCH"
 
-	if "$STASHED"
-	    then
-    	    echo "Poping stashed changes"
-            git stash pop -q
-	fi
+        if "$STASHED"
+            then
+                echo "Poping stashed changes"
+                git stash pop -q
+        fi
 
 }
 
 function makeenv() {
-	virtualenv -p /usr/local/opt/python@3.8/bin/python3.8 venv &&
+        PY_INFO=$(brew info python@3.10)
+        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on')
+        if [ -z "$INSTALLED" ]
+        then
+            echo "Python3.10 not installed"
+                return 1
+        fi
+        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
+        virtualenv -p $PYTHON venv &&
         source venv/bin/activate &&
         pip install ipython black isort flake8 autoflake
-} 
+}
+
+function makeenv38() {
+        PY_INFO=$(brew info python@3.8)
+        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on')
+        if [ -z "$INSTALLED" ]
+        then
+            echo "Python3.8 not installed"
+                return 1
+        fi
+        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
+        virtualenv -p $PYTHON venv &&
+        source venv/bin/activate &&
+        pip install ipython black isort flake8 autoflake
+}
 
 function startenv () {
-	source venv/bin/activate
+        if [ -d 'venv' ]
+          then
+          source venv/bin/activate
+        elif [ -d '../venv' ]
+          then
+          source ../venv/bin/activate
+        elif [ -d '../../venv' ]
+          then
+          source ../../venv/bin/activate
+        else
+          echo 'No venv dir found.'
+        fi
 }
 
 
 function cleancode () {
-	flake8 . &&
+        flake8 . &&
         isort . &&
-	black . &&
+        black . &&
 }
 
 function mkgitdir (){
-	mkdir -p -- "$1" &&
-	cd -P -- "$1" &&
-	git init --quiet  &&
-	touch .gitignore &&
-	mkdir src
+        mkdir -p -- "$1" &&
+        cd -P -- "$1" &&
+        git init --quiet  &&
+        touch .gitignore &&
+        mkdir src
 }
 
 function mkcd (){
-	mkdir -p -- "$1" &&
-	cd -P "$1"
+        mkdir -p -- "$1" &&
+        cd -P "$1"
 }
 
 function sleeptime (){
-	sudo shutdown -s now
+        sudo shutdown -s now
 }
 
 function gitcom () {
         git add . &&
         git commit -m 'Update'
-
-if [ -z "$(git status --porcelain)" ]; then 
-        git reset --soft HEAD~1 &&
-        git commit --all --amend --no-edit
-        echo 'Commit and rebase successful'
-else 
-  echo 'Error! Working tree not clean.'
-fi
 }
 
 # ALIAS
@@ -240,7 +266,6 @@ alias ls='exa --all --long --header'
 alias ltt='tree -a -s --filelimit 10'
 alias lt='exa --all --long --header --inode --git --tree --level=3'
 alias runserv='python manage.py runserver'
-alias startenv='source venv/bin/activate'
 alias ddshell='python manage.py shell_plus --print-sql --ipython'
 alias dshell='python manage.py shell -i ipython'
 alias c='clear'
