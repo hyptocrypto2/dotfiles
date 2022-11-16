@@ -179,7 +179,7 @@ function gitreb() {
 
 function makeenv() {
         PY_INFO=$(brew info python@3.10)
-        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on')
+        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on\|Built from source on')
         if [ -z "$INSTALLED" ]
         then
             echo "Python3.10 not installed"
@@ -193,7 +193,7 @@ function makeenv() {
 
 function makeenv38() {
         PY_INFO=$(brew info python@3.8)
-        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on')
+        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on\|Built from source on')
         if [ -z "$INSTALLED" ]
         then
             echo "Python3.8 not installed"
