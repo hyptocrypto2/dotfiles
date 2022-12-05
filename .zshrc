@@ -149,6 +149,10 @@ function makepr() {
         gh pr create --fill && gh pr view -w
 }
 
+function makerepo() {
+        gh repo create --public --source . --remote origin
+}
+
 function daycare() {
         cd ~/dev/daycare_owl && startenv && cd app && code .
 }
