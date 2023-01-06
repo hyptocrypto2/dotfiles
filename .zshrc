@@ -224,6 +224,14 @@ function startenv () {
         fi
 }
 
+function workon () {
+        if [ $# -eq 0 ]
+        then
+            startenv && code .
+        else
+           cd $1 && startenv && code .
+        fi
+}
 
 function cleancode () {
         flake8 . &&
