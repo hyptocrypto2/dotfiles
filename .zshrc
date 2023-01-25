@@ -181,6 +181,30 @@ function gitreb() {
 
 }
 
+
+function gitmer() {
+        if output=$(git status --porcelain) && ! [ -z "$output" ]; then
+            echo "Stashing changes"
+            STASHED=true
+            git stash -q  --include-untracked
+        else
+            echo "Working Tree Clean"
+	    STASHED=false
+        fi
+
+        MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+        git fetch -q origin &&
+        echo "Merging origin/$MAIN_BRANCH"
+        git merge -q  "origin/$MAIN_BRANCH"
+
+        if "$STASHED"
+            then
+                echo "Poping stashed changes"
+                git stash pop -q
+        fi
+
+}
+
 function makeenv() {
         PY_INFO=$(brew info python@3.10)
         INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on\|Built from source on')
