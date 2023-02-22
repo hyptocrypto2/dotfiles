@@ -72,7 +72,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-    gh
+        gh
 	docker
 	docker-compose
 	zsh-autosuggestions
@@ -157,6 +157,13 @@ function daycare() {
         cd ~/dev/daycare_owl && startenv && cd app && code .
 }
 
+function gbrename() {
+    CURRENT_NAME="$(git rev-parse --abbrev-ref HEAD)"
+    NEW_NAME=$1
+    git branch -m $NEW_NAME
+    git push origin :$CURRENT_NAME $NEW_NAME
+    git push origin -u $NEW_NAME
+}
 
 function gitreb() {
         if output=$(git status --porcelain) && ! [ -z "$output" ]; then
@@ -180,15 +187,6 @@ function gitreb() {
         fi
 
 }
-
-function gbrename() {
-    CURRENT_NAME="$(git rev-parse --abbrev-ref HEAD)"
-    NEW_NAME=$1
-    git branch -m $NEW_NAME
-    git push origin :$CURRENT_NAME $NEW_NAME
-    git push origin -u $NEW_NAME
-}
-
 
 function gitmer() {
         if output=$(git status --porcelain) && ! [ -z "$output" ]; then
