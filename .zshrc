@@ -181,6 +181,14 @@ function gitreb() {
 
 }
 
+function gbrename() {
+    CURRENT_NAME="$(git rev-parse --abbrev-ref HEAD)"
+    NEW_NAME=$1
+    git branch -m $NEW_NAME
+    git push origin :$CURRENT_NAME $NEW_NAME
+    git push origin -u $NEW_NAME
+}
+
 
 function gitmer() {
         if output=$(git status --porcelain) && ! [ -z "$output" ]; then
