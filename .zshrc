@@ -213,13 +213,12 @@ function gitmer() {
 
 function makeenv() {
         PY_INFO=$(brew info python@3.10)
-        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on\|Built from source on')
-        if [ -z "$INSTALLED" ]
+        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
+        if [ -z "$PYTHON" ]
         then
             echo "Python3.10 not installed"
                 return 1
         fi
-        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
         virtualenv -p $PYTHON venv &&
         source venv/bin/activate &&
         pip install ipython black isort flake8 autoflake
@@ -227,13 +226,12 @@ function makeenv() {
 
 function makeenv38() {
         PY_INFO=$(brew info python@3.8)
-        INSTALLED=$(less "$PY_INFO"| grep -A1 'Poured from bottle on\|Built from source on')
-        if [ -z "$INSTALLED" ]
+        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
+        if [ -z "$PYTHON" ]
         then
             echo "Python3.8 not installed"
                 return 1
         fi
-        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
         virtualenv -p $PYTHON venv &&
         source venv/bin/activate &&
         pip install ipython black isort flake8 autoflake
