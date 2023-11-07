@@ -3,7 +3,6 @@
         "*.ipynb": "jupyter-notebook"
     },
     "files.insertFinalNewline": true,
-    "workbench.editor.untitled.hint": "hidden",
     "python.defaultInterpreterPath": "./venv/bin/python",
     "notebook.cellToolbarLocation": {
         "default": "right",
@@ -12,7 +11,6 @@
     "cSpell.userWords": [
         "yakimaherald"
     ],
-    "workbench.colorTheme": "Material Theme High Contrast",
     "editor.suggestSelection": "first",
     "html.suggest.html5": true,
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
@@ -20,10 +18,19 @@
         "[Material Theme High Contrast]": {
             "textMateRules": [
                 {
-                    "name": "Keywords",
-                    "scope": "keyword.control.flow.python",
-                    "settings":{
-                        "foreground": "#f36868", "fontStyle": "italic"
+                    "name": "",
+                    "scope": "keyword.control.import.python",
+                    "settings": {
+                        "foreground": "#68bbf3",
+                        "fontStyle": "italic"
+                    }
+                },
+                {
+                    "name": "",
+                    "scope": "keyword.control",
+                    "settings": {
+                        "foreground": "#f36868",
+                        "fontStyle": "italic"
                     }
                 },
                 {
@@ -116,8 +123,7 @@
         }
     },
     "html.format.indentInnerHtml": true,
-    "workbench.editor.showTabs": false,
-    "workbench.editor.enablePreview": false,
+    "workbench.editor.showTabs": "single",
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
     },
@@ -140,33 +146,75 @@
     "terminal.integrated.allowChords": false,
     "terminal.integrated.altClickMovesCursor": false,
     "html.format.indentHandlebars": true,
-"files.associations": {
-    "**/*.html": "html",
-    "**/templates/**/*.html": "django-html",
-    "**/templates/**/*": "django-txt",
-    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
-},
-"emmet.includeLanguages": {
-    "django-html": "html",
-    "javascript": "javascriptreact"
-},
-"beautify.language": {
-    "html": [
-        "htm",
-        "html",
+    "files.associations": {
+        "**/*.html": "html",
+        "**/templates/**/*.html": "jinja-html",
+        "**/templates/**/*": "jinja-html",
+        "**/*.jinja": "jinja-html",
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements",
+        "*.jinja": "html"
+    },
+    "emmet.includeLanguages": {
+        "django-html": "html",
+        "javascript": "javascriptreact"
+    },
+    "beautify.language": {
+        "html": [
+            "htm",
+            "html",
+            "django-html"
+        ]
+    },
+    "[django-html]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalSubscript": "none",
+    },
+    "python.formatting.provider": "black",
+    "cSpell.enableFiletypes": [
         "django-html"
+    ],
+    "workbench.editor.enablePreviewFromQuickOpen": true,
+    "workbench.editor.enablePreviewFromCodeNavigation": true,
+    "workbench.editor.enablePreview": false,
+    "workbench.colorTheme": "Material Theme High Contrast",
+    "workbench.startupEditor": "none",
+    "git.openRepositoryInParentFolders": "always",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "window.zoomLevel": 1,
+    "workbench.editor.empty.hint": "hidden",
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "<tab>"
+            ],
+            "after": [
+                "<esc>",
+                ">",
+                ">"
+            ]
+        },
+        {
+            "before": [
+                "r"
+            ],
+            "after": [
+                "<C-r>"
+            ]
+        },
+    ],
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "d", "k"
+            ],
+            "after": [
+                "<Esc>"
+            ]
+        }
     ]
-},
-"[django-html]": {
-    "editor.defaultFormatter": "HookyQR.beautify"
-},
-"python.analysis.diagnosticSeverityOverrides": {
-    "reportOptionalMemberAccess": "none",
-    "reportOptionalSubscript": "none",
-},
-"python.formatting.provider": "black",
-"cSpell.enableFiletypes": [
-    "django-html"
-]
 }
-
