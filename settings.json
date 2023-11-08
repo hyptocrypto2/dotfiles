@@ -187,15 +187,51 @@
     },
     "window.zoomLevel": 1,
     "workbench.editor.empty.hint": "hidden",
-    "vim.normalModeKeyBindings": [
+    "vim.visualModeKeyBindings": [
+        {
+            "before": ["Tab"],
+            "commands": [
+                {
+                    "command": "editor.action.indentLines",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "before": ["<S-Tab>"],
+            "commands": [
+                {
+                    "command": "editor.action.outdentLines",
+                    "args": []
+                }
+            ]
+        },
         {
             "before": [
-                "<tab>"
+                "r"
             ],
             "after": [
-                "<esc>",
-                ">",
-                ">"
+                "<C-r>"
+            ]
+        },
+    ],
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["Tab"],
+            "commands": [
+                {
+                    "command": "editor.action.indentLines",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "before": ["<S-Tab>"],
+            "commands": [
+                {
+                    "command": "editor.action.outdentLines",
+                    "args": []
+                }
             ]
         },
         {
@@ -210,7 +246,8 @@
     "vim.insertModeKeyBindings": [
         {
             "before": [
-                "d", "k"
+                "d",
+                "k"
             ],
             "after": [
                 "<Esc>"
