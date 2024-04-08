@@ -165,6 +165,12 @@ function gbrename() {
     git push origin -u $NEW_NAME
 }
 
+function gmain() {
+        MAIN="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
+        git pull & git checkout $MAIN && git pull
+}
+
+
 function gitreb() {
         if output=$(git status --porcelain) && ! [ -z "$output" ]; then
             echo "Stashing changes"
@@ -309,7 +315,7 @@ alias runserv='python manage.py runserver'
 alias ddshell='python manage.py shell_plus --print-sql --ipython'
 alias dshell='python manage.py shell -i ipython'
 alias c='clear'
-
+alias gitclear='git stash && git stash clear'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
