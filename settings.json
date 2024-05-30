@@ -1,19 +1,39 @@
 {
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
+    "cSpell.diagnosticLevel": "Hint",
+    "editor.snippetSuggestions": "top",
+    "editor.suggest.snippetsPreventQuickSuggestions": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalSubscript": "none",
     },
+    "workbench.colorTheme": "Material Theme High Contrast",
+    "python.analysis.typeCheckingMode": "basic",
     "files.insertFinalNewline": true,
-    "python.defaultInterpreterPath": "./venv/bin/python",
-    "notebook.cellToolbarLocation": {
-        "default": "right",
-        "jupyter-notebook": "left"
+    "python.languageServer": "Pylance",
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.py$",
+                "isAsync": true,
+                // Use the full path from above in case it can't find it
+                "cmd": "isort \"${file}\""
+            },
+            {
+                "match": "\\.py$",
+                "isAsync": true,
+                // Use the full path from above in case it can't find it
+                "cmd": "ruff check --fix \"${file}\""
+            },
+            {
+                "match": "\\.py$",
+                "isAsync": true,
+                // Use the full path from above in case it can't find it
+                "cmd": "black \"${file}\""
+            },
+        ]
     },
-    "cSpell.userWords": [
-        "yakimaherald"
-    ],
-    "editor.suggestSelection": "first",
-    "html.suggest.html5": true,
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "terminal.explorerKind": "external",
+    "terminal.external.osxExec": "",
     "editor.tokenColorCustomizations": {
         "[Material Theme High Contrast]": {
             "textMateRules": [
@@ -122,136 +142,26 @@
             ]
         }
     },
-    "html.format.indentInnerHtml": true,
-    "workbench.editor.showTabs": "single",
-    "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
-    },
-    "emeraldwalk.runonsave": {
-        "commands": [
-            {
-                "match": "\\.py$",
-                "cmd": "black \"${file}\""
-            },
-            {
-                "match": "\\.py$",
-                "cmd": "autoflake --in-place --remove-all-unused-imports \"${file}\""
-            }
-        ]
-    },
-    "terminal.explorerKind": "external",
-    "terminal.external.linuxExec": "",
-    "terminal.external.osxExec": "",
-    "terminal.external.windowsExec": "",
-    "terminal.integrated.allowChords": false,
-    "terminal.integrated.altClickMovesCursor": false,
-    "html.format.indentHandlebars": true,
-    "files.associations": {
-        "**/*.html": "html",
-        "**/templates/**/*.html": "jinja-html",
-        "**/templates/**/*": "jinja-html",
-        "**/*.jinja": "jinja-html",
-        "**/requirements{/**,*}.{txt,in}": "pip-requirements",
-        "*.jinja": "html"
-    },
-    "emmet.includeLanguages": {
-        "django-html": "html",
-        "javascript": "javascriptreact"
-    },
-    "beautify.language": {
-        "html": [
-            "htm",
-            "html",
-            "django-html"
-        ]
-    },
-    "[django-html]": {
-        "editor.defaultFormatter": "HookyQR.beautify"
-    },
-    "python.analysis.diagnosticSeverityOverrides": {
-        "reportOptionalMemberAccess": "none",
-        "reportOptionalSubscript": "none",
-    },
-    "python.formatting.provider": "black",
-    "cSpell.enableFiletypes": [
-        "django-html"
-    ],
-    "workbench.editor.enablePreviewFromQuickOpen": true,
-    "workbench.editor.enablePreviewFromCodeNavigation": true,
-    "workbench.editor.enablePreview": false,
-    "workbench.colorTheme": "Material Theme High Contrast",
-    "workbench.startupEditor": "none",
-    "git.openRepositoryInParentFolders": "always",
+    "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": 800,
+    "python.condaPath": "./venv/bin/python",
     "[python]": {
         "editor.formatOnType": true
     },
-    "window.zoomLevel": 1,
-    "workbench.editor.empty.hint": "hidden",
-    "vim.visualModeKeyBindings": [
-        {
-            "before": ["Tab"],
-            "commands": [
-                {
-                    "command": "editor.action.indentLines",
-                    "args": []
-                }
-            ]
+    "workbench.startupEditor": "none",
+    "git.openRepositoryInParentFolders": "always",
+    "http.proxyStrictSSL": false,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "vscode-neovim.neovimInitVimPaths.linux": "/Users/julianbaumgartner/.config/nvim/init.vim", 
+    "vscode-neovim.compositeKeys": {
+        "jk": {
+            "command": "vscode-neovim.escape",
         },
-        {
-            "before": ["<S-Tab>"],
-            "commands": [
-                {
-                    "command": "editor.action.outdentLines",
-                    "args": []
-                }
-            ]
-        },
-        {
-            "before": [
-                "r"
-            ],
-            "after": [
-                "<C-r>"
-            ]
-        },
-    ],
-    "vim.normalModeKeyBindings": [
-        {
-            "before": ["Tab"],
-            "commands": [
-                {
-                    "command": "editor.action.indentLines",
-                    "args": []
-                }
-            ]
-        },
-        {
-            "before": ["<S-Tab>"],
-            "commands": [
-                {
-                    "command": "editor.action.outdentLines",
-                    "args": []
-                }
-            ]
-        },
-        {
-            "before": [
-                "r"
-            ],
-            "after": [
-                "<C-r>"
-            ]
-        },
-    ],
-    "vim.insertModeKeyBindings": [
-        {
-            "before": [
-                "d",
-                "k"
-            ],
-            "after": [
-                "<Esc>"
-            ]
-        }
-    ]
+    },
+    "editor.lineNumbers": "relative",
+    "gopls": { "ui.semanticTokens": true }
 }
+
+
