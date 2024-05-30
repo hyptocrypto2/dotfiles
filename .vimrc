@@ -1,5 +1,6 @@
 " Basic
 syntax on
+set number
 set relativenumber
 
 " Turn backup off, since most stuff is in SVN, git etc. anyway...
