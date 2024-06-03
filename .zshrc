@@ -243,27 +243,24 @@ function makeenv38() {
         pip install ipython black isort flake8 autoflake
 }
 
-function startenv () {
-        if [ -d 'venv' ]
-          then
-          source venv/bin/activate
-        elif [ -d '../venv' ]
-          then
-          source ../venv/bin/activate
-        elif [ -d '../../venv' ]
-          then
-          source ../../venv/bin/activate
-        else
-          echo 'No venv dir found.'
-        fi
+function _open_nvim_shell() {
+        local folder_path="${1:-$(pwd)}"
+
+        osascript -e 'tell application "iTerm2"
+            tell current window
+                create tab with default profile
+                tell current session of current tab
+                    write text "cd '"$folder_path"' && startenv && nvim ."
+                end tell
+            end tell
+        end tell'
 }
 
-function workon () {
-        if [ $# -eq 0 ]
-        then
-            startenv && code .
+function workon() {
+        if [ $# -eq 0 ]; then
+            startenv && _open_nvim_shell
         else
-           cd $1 && startenv && code .
+            cd "$1" && startenv && _open_nvim_shell "$1"
         fi
 }
 
