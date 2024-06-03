@@ -23,7 +23,7 @@ cmp.setup({
 -- Ensure you have set completeopt to have a better completion experience
 vim.o.completeopt = "menu,menuone,noselect"
 
--- Lint Python files on save
+-- Auto-command setup for Python files
 vim.api.nvim_exec(
   [[
     augroup FormatAutogroup
@@ -32,14 +32,6 @@ vim.api.nvim_exec(
     augroup END
 ]],
   true
-)
-
--- Simplify changing variable names
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>cn",
-  ":let @/='\\<'.expand('<cword>').'\\>'<CR>cgn",
-  { noremap = true, silent = true }
 )
 
 -- Dont show leading whitespace dashes
@@ -62,23 +54,3 @@ vim.opt.expandtab = true
 vim.opt.smarttab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
-
--- Make backspace behave and wrap on newlines
-vim.opt.backspace = { "eol", "start", "indent" }
-vim.opt.whichwrap:append("<,>,h,l")
-
--- Remaps
-vim.api.nvim_set_keymap("v", "<Tab>", ">gv", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<S-Tab>", "<gv", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "r", "<C-r>", { noremap = true, silent = true })
-
--- Map Tab to indent in normal, visual, and select modes
-vim.api.nvim_set_keymap("n", "<Tab>", ">>", { noremap = true })
-vim.api.nvim_set_keymap("v", "<Tab>", ">gv", { noremap = true })
-vim.api.nvim_set_keymap("s", "<Tab>", ">", { noremap = true })
-
--- Map Shift+Tab to unindent in normal, visual, and select modes
-vim.api.nvim_set_keymap("n", "<S-Tab>", "<<", { noremap = true })
-vim.api.nvim_set_keymap("v", "<S-Tab>", "<gv", { noremap = true })
-vim.api.nvim_set_keymap("s", "<S-Tab>", "<", { noremap = true })
