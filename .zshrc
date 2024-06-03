@@ -264,6 +264,19 @@ function workon() {
         fi
 }
 
+function syncdot() {
+        curr_dir=$(pwd)
+        
+        cd ~/dev/dotfiles
+        git pull
+
+        cp .zshrc ~/.zshrc
+        cp -r nvim ~/.config/
+
+        cd "$curr_dir"
+}
+
+
 function cleancode () {
         flake8 . &&
         isort . &&
