@@ -23,17 +23,6 @@ cmp.setup({
 -- Ensure you have set completeopt to have a better completion experience
 vim.o.completeopt = "menu,menuone,noselect"
 
--- Auto-command setup for Python files
-vim.api.nvim_exec(
-  [[
-    augroup FormatAutogroup
-        autocmd!
-        autocmd BufWritePost *.py execute '!isort ' . expand('%:p') | execute '!ruff check --fix ' . expand('%:p') | execute '!autoflake --remove-all-unused-imports ' . expand('%:p') | execute '!black ' . expand('%:p')
-    augroup END
-]],
-  true
-)
-
 -- Dont show leading whitespace dashes
 vim.opt.list = false
 

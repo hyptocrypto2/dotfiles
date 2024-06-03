@@ -272,6 +272,7 @@ function syncdot() {
 
         cp .zshrc ~/.zshrc
         cp -r nvim ~/.config/
+        source ~/.zshrc
 
         cd "$curr_dir"
 }

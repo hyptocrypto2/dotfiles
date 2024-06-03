@@ -2,6 +2,22 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+-- Function to toggle between the current buffer and Neo-tree
+function ToggleNeoTree()
+  local bufnr = vim.fn.bufnr()
+  local winid = vim.fn.bufwinid(bufnr)
+  if winid == -1 then
+    -- If the buffer is not in any window, open Neo-tree
+    vim.cmd("Neotree toggle")
+  else
+    -- If the buffer is in a window, go to the next window (Neo-tree)
+    vim.cmd("wincmd w")
+  end
+end
+
+-- Keymap to toggle between the current buffer and Neo-tree
+vim.api.nvim_set_keymap("n", "<leader>t", ":lua ToggleNeoTree()<CR>", { noremap = true, silent = true })
+
 -- Simplify changing variable names
 vim.api.nvim_set_keymap(
   "n",
