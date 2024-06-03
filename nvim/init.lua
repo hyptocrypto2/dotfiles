@@ -23,7 +23,7 @@ cmp.setup({
 -- Ensure you have set completeopt to have a better completion experience
 vim.o.completeopt = "menu,menuone,noselect"
 
--- Auto-command setup for Python files
+-- Lint Python files on save
 vim.api.nvim_exec(
   [[
     augroup FormatAutogroup
@@ -33,6 +33,17 @@ vim.api.nvim_exec(
 ]],
   true
 )
+
+-- Simplify changing variable names
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>cn",
+  ":let @/='\\<'.expand('<cword>').'\\>'<CR>cgn",
+  { noremap = true, silent = true }
+)
+
+-- Dont show leading whitespace dashes
+vim.opt.list = false
 
 -- Use system clipboard
 vim.o.clipboard = "unnamedplus"
