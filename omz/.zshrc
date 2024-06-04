@@ -272,7 +272,7 @@ function syncdot() {
         cd ~/dev/dotfiles
         git pull
 
-        cp .zshrc ~/.zshrc
+        cp omz/.zshrc ~/.zshrc
         cp -r nvim ~/.config/
         source ~/.zshrc
 
