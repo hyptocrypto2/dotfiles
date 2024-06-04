@@ -20,6 +20,17 @@ cmp.setup({
   -- Other cmp configurations...
 })
 
+-- Auto-command setup for Python files
+vim.api.nvim_exec(
+  [[
+    augroup FormatAutogroup
+        autocmd!
+        autocmd BufWritePost *.py execute '!isort ' . expand('%:p') | execute '!ruff check --fix ' . expand('%:p') | execute '!autoflake --remove-all-unused-imports ' . expand('%:p') | execute '!black ' . expand('%:p')
+    augroup END
+]],
+  true
+)
+
 -- Ensure you have set completeopt to have a better completion experience
 vim.o.completeopt = "menu,menuone,noselect"
 
