@@ -72,12 +72,14 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-        gh
-	docker
+    gh
+    golang	
+    docker
 	docker-compose
 	zsh-autosuggestions
 	zsh-autocomplete
-	colored-man-pages
+    zsh-syntax-highlighting	
+    colored-man-pages
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -338,6 +340,12 @@ if [ -f '/Users/julianbaumgartner/Desktop/google-cloud-sdk/completion.zsh.inc' ]
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 
 # Custom key binings
