@@ -153,8 +153,8 @@ function makerepo() {
         gh repo create --public --source . --remote origin
 }
 
-function daycare() {
-        cd ~/dev/daycare_owl && startenv && cd app && code .
+function startenv() {
+	source venv/bin/activate
 }
 
 function gbrename() {
