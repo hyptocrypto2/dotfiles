@@ -43,3 +43,8 @@ vim.api.nvim_set_keymap("s", "<S-Tab>", "<", { noremap = true })
 -- Personal
 vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "r", "<C-r>", { noremap = true, silent = true })
+
+-- Golang
+vim.api.nvim_set_keymap("c", "ifer", "GoIfErr<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("c", "bb", "lua require'dap'.toggle_breakpoint()", { noremap = true, silent = true })
