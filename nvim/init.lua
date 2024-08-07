@@ -104,3 +104,12 @@ require("lspconfig").gopls.setup({
   },
   -- other options
 })
+
+vim.api.nvim_create_user_command("Script", function()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  local new_line = line:sub(1, col) .. '<script src="">console.log()</script>' .. line:sub(col + 1)
+  vim.api.nvim_set_current_line(new_line)
+  vim.api.nvim_win_set_cursor(0, { row, col + 27 })
+  vim.cmd("startinsert")
+end, {})

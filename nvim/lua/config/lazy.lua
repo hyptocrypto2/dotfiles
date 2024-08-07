@@ -50,3 +50,23 @@ require("lazy").setup({
     },
   },
 })
+
+-- Enable spell checking for all files
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*" },
+  command = "setlocal spell spelllang=en",
+})
+
+require("telescope").setup({
+  defaults = {
+    cwd = vim.fn.getcwd(), -- Use the current working directory set by vim-rooter
+  },
+})
+
+-- Optional: Create a Telescope command that always opens in the root directory
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>ff",
+  "<cmd>lua require('telescope.builtin').find_files({ cwd = vim.fn.getcwd() })<CR>",
+  { noremap = true, silent = true }
+)
