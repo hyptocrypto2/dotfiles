@@ -1,6 +1,16 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
+-- Lazyvim LSP Configuration
+local lspconfig = require("lspconfig")
 
+lspconfig.eslint.setup({
+  settings = {
+    workingDirectory = { mode = "auto" },
+  },
+  on_attach = function(client, bufnr)
+    -- Add your custom on_attach functions here
+  end,
+})
 -- Make tabs work to move through intellisence menus
 -- Ensure cmp is installed and required
 local cmp = require("cmp")
@@ -54,3 +64,43 @@ vim.opt.expandtab = true
 vim.opt.smarttab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+
+require("lspconfig").gopls.setup({
+  settings = {
+    gopls = {
+      gofumpt = true,
+      codelenses = {
+        gc_details = false,
+        generate = true,
+        regenerate_cgo = true,
+        run_govulncheck = true,
+        test = true,
+        tidy = true,
+        upgrade_dependency = true,
+        vendor = true,
+      },
+      hints = {
+        assignVariableTypes = false,
+        compositeLiteralFields = false,
+        compositeLiteralTypes = false,
+        constantValues = false,
+        functionTypeParameters = false,
+        parameterNames = false,
+        rangeVariableTypes = false,
+      },
+      analyses = {
+        fieldalignment = true,
+        nilness = true,
+        unusedparams = true,
+        unusedwrite = true,
+        useany = true,
+      },
+      usePlaceholders = true,
+      completeUnimported = true,
+      staticcheck = true,
+      directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+      semanticTokens = true,
+    },
+  },
+  -- other options
+})

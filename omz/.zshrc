@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -75,6 +82,7 @@ plugins=(
     gh
     golang	
     docker
+    vi-mode
 	docker-compose
 	zsh-autosuggestions
 	zsh-autocomplete
@@ -122,17 +130,10 @@ XBREW_PATH="/usr/local/homebrew/bin"
 BREW_PATH="/opt/homebrew/bin"
 PSQL_PATH="/Applications/Postgres.app/Contents/Versions/latest/bin"
 JAVA_PATH="/usr/local/homebrew/opt/openjdk/bin"
+GO_PATH="/Users/julianbaumgartner/go/bin"
+VSCODE_PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin" 
 
-### SET RIGHT BREW PATH FOR ARCH TYPE ###
-arch_name="$(uname -m)"
-if [ "${arch_name}" = "x86_64" ]; then
-    export PATH="$XBREW_PATH:$PATH:$PSQL_PATH:$JAVA_PATH"
-    fi 
-if [ "${arch_name}" = "arm64" ]; then
-    export PATH="$BREW_PATH:$PATH:$PSQL_PATH:$JAVA_PATH"
-    fi
-
-#export PATH="$BREW_PATH:$PATH:$PSQL_PATH"
+export PATH="$PATH:$GO_PATH:$VSCODE_PATH:$BREW_PATH"
 
 # useful Python C-library compliation flags
 export LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix zlib)/lib"
@@ -167,11 +168,26 @@ function gbrename() {
     git push origin -u $NEW_NAME
 }
 
-function gmain() {
+function gmainpull() {
         MAIN="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
         git pull & git checkout $MAIN && git pull
 }
 
+function gmain() {
+        echo "$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
+}
+
+function gcurr() {
+        echo "$(git rev-parse --abbrev-ref HEAD)"
+}
+
+#Gitlab MergeReqeust
+function makepr() {
+        MAIN=$(gmain)
+        CUR=$(gcurr)
+        echo "$MAIN"
+        git push -o merge_request.create -o merge_request.target=$MAIN origin $CUR
+}
 
 function gitreb() {
         if output=$(git status --porcelain) && ! [ -z "$output" ]; then
@@ -220,11 +236,11 @@ function gitmer() {
 }
 
 function makeenv() {
-        PY_INFO=$(brew info python@3.10)
+        PY_INFO=$(brew info python@3.12)
         PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
         if [ -z "$PYTHON" ]
         then
-            echo "Python3.10 not installed"
+            echo "Python3.12 not installed"
                 return 1
         fi
         virtualenv -p $PYTHON venv &&
@@ -309,6 +325,7 @@ function gitcom () {
 }
 
 # ALIAS
+alias n="nvim ."
 alias xbrew='/usr/local/Homebrew/bin/brew'
 alias cdd='cd ../'
 alias cddd='cd ../../'
@@ -320,10 +337,10 @@ alias gaa="git add ."
 alias gr='git rebase -i HEAD~2'
 alias gcu='git commit -m "Update"'
 alias prettygit="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias ll='exa --all --long --header'
-alias ls='exa --all --long --header'
+alias ll='lsd --all --long --header'
+alias ls='lsd --all --long --header'
 alias ltt='tree -a -s --filelimit 10'
-alias lt='exa --all --long --header --inode --git --tree --level=3'
+alias lt='lsd --all --long --header --inode --git --tree --level=3'
 alias runserv='python manage.py runserver'
 alias ddshell='python manage.py shell_plus --print-sql --ipython'
 alias dshell='python manage.py shell -i ipython'
@@ -350,3 +367,4 @@ export NVM_DIR="$HOME/.nvm"
 
 # Custom key binings
 bindkey '\t\t' autosuggest-accept
+bindkey -M viins 'jk' vi-cmd-mode
