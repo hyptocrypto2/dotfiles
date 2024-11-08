@@ -46,5 +46,64 @@ vim.api.nvim_set_keymap("n", "r", "<C-r>", { noremap = true, silent = true })
 
 -- Golang
 vim.api.nvim_set_keymap("c", "ifer", "GoIfErr<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "bb", "DapToggleBreakpoint", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("c", "bb", "lua require'dap'.toggle_breakpoint()", { noremap = true, silent = true })
+local dap = require("dap")
+local dap_go = require("dap-go")
+
+-- Helper function to run `go test` and handle notifications
+local function run_go_test_command(cmd, success_title, fail_title)
+  local output = vim.fn.systemlist(cmd)
+  local output_str = table.concat(output, "\n")
+  local timeout = 10000
+
+  if vim.v.shell_error == 0 then
+    vim.notify(output_str, vim.log.levels.INFO, { title = success_title, timeout = timeout })
+  else
+    vim.notify(
+      "Error running `go test`:\n" .. output_str,
+      vim.log.levels.ERROR,
+      { title = fail_title, timeout = timeout }
+    )
+  end
+end
+
+-- Function to run the nearest Go test under the cursor
+local function run_nearest_go_test()
+  -- Get the test name under the cursor
+  local test_name = vim.fn.search("^func Test", "bnW")
+  if test_name == 0 then
+    vim.notify("No test function found near the cursor", vim.log.levels.WARN, { title = "Go Test" })
+    return
+  end
+
+  -- Extract the name of the test function
+  local line = vim.fn.getline(test_name)
+  local test_func = line:match("^func%s+(Test%w+)")
+  if not test_func then
+    vim.notify("Failed to parse test function name", vim.log.levels.ERROR, { title = "Go Test" })
+    return
+  end
+
+  -- Build and run the `go test` command
+  local cmd = "go test -v -run '^" .. test_func .. "$' " .. vim.fn.expand("%:p:h")
+  run_go_test_command(cmd, "Go Test Success", "Go Test Failed")
+end
+
+-- Function to run all Go tests in the current file
+local function run_go_tests()
+  local cmd = "go test -v " .. vim.fn.expand("%:p:h")
+  run_go_test_command(cmd, "Go Test Success", "Go Test Failed")
+end
+
+local function debug_test()
+  dap_go.debug_test()
+  if not dap.repl.open() then
+    dap.repl.toggle()
+  end
+end
+
+-- Create a command to trigger the function
+vim.api.nvim_create_user_command("Gotest", run_nearest_go_test, {})
+vim.api.nvim_create_user_command("Gotestd", debug_test, {})
+vim.api.nvim_create_user_command("Gotestall", run_go_tests, {})

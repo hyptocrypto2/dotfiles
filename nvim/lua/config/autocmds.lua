@@ -3,3 +3,30 @@
 -- Define the function to run the formatting tools
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, { pattern = { "*.templ" }, callback = vim.lsp.buf.format })
+
+vim.api.nvim_create_user_command("Script", function()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  local new_line = line:sub(1, col) .. '<script src="">console.log()</script>' .. line:sub(col + 1)
+  vim.api.nvim_set_current_line(new_line)
+  vim.api.nvim_win_set_cursor(0, { row, col + 27 })
+  vim.cmd("startinsert")
+end, {})
+
+vim.api.nvim_create_user_command("Jsfunc", function()
+  -- Get the current cursor position
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+  -- Define the JavaScript arrow function snippet, with each line as a separate entry
+  local arrow_function = {
+    "() => {",
+    "    ", -- Empty space for indentation
+    "}",
+  }
+
+  -- Insert the snippet at the current cursor position
+  vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, arrow_function)
+
+  -- Move the cursor inside the function body
+  vim.api.nvim_win_set_cursor(0, { row + 1, col + 4 })
+end, {})
