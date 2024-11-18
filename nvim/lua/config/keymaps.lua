@@ -86,13 +86,13 @@ local function run_nearest_go_test()
   end
 
   -- Build and run the `go test` command
-  local cmd = "go test -v -run '^" .. test_func .. "$' " .. vim.fn.expand("%:p:h")
+  local cmd = "go test -v -run " .. test_func
   run_go_test_command(cmd, "Go Test Success", "Go Test Failed")
 end
 
 -- Function to run all Go tests in the current file
 local function run_go_tests()
-  local cmd = "go test -v " .. vim.fn.expand("%:p:h")
+  local cmd = "go test -v"
   run_go_test_command(cmd, "Go Test Success", "Go Test Failed")
 end
 
