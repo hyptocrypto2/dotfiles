@@ -48,3 +48,5 @@ vim.api.nvim_set_keymap("n", "r", "<C-r>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("c", "ifer", "GoIfErr<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("c", "bb", "lua require'dap'.toggle_breakpoint()", { noremap = true, silent = true })
+
+vim.keymap.set("c", "Codelens", "lua vim.lsp.codelens.run()", { desc = "Run CodeLens" })
