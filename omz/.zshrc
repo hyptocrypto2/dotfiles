@@ -157,7 +157,7 @@ function makerepo() {
 }
 
 function startenv() {
-	source venv/bin/activate
+	source .venv/bin/activate
 }
 
 function gbrename() {
@@ -236,16 +236,17 @@ function gitmer() {
 }
 
 function makeenv() {
-        PY_INFO=$(brew info python@3.12)
-        PYTHON=$(less "$PY_INFO"| grep -A1 'Python has been installed' | grep '/' | xargs)
-        if [ -z "$PYTHON" ]
-        then
-            echo "Python3.12 not installed"
-                return 1
-        fi
-        virtualenv -p $PYTHON venv &&
-        source venv/bin/activate &&
-        pip install ipython black isort flake8 autoflake
+    uv python install 3.13 && \
+    uv init && \
+    rm hello.py && \
+    uv venv --python 3.13 && \
+    source .venv/bin/activate && \
+    uv add ipython black isort flake8 autoflake && \
+    echo "[tool.ruff]
+line-length = 88
+extend-select = [\"I\", \"UP\"]
+extend-ignore = [\"E501\"]  # Ignore line length errors
+fix = true" >> pyproject.toml
 }
 
 function makeenv38() {
