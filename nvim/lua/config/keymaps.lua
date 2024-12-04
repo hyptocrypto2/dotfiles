@@ -107,3 +107,4 @@ end
 vim.api.nvim_create_user_command("Gotest", run_nearest_go_test, {})
 vim.api.nvim_create_user_command("Gotestd", debug_test, {})
 vim.api.nvim_create_user_command("Gotestall", run_go_tests, {})
+vim.keymap.set("c", "Codelens", "lua vim.lsp.codelens.run()", { desc = "Run CodeLens" })

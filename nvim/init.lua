@@ -72,11 +72,21 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
 lspconfig.gopls.setup({
+  on_attach = function(client, bufnr)
+    if client.server_capabilities.codeLensProvider then
+      vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.codelens.refresh()
+        end,
+      })
+    end
+  end,
   settings = {
     gopls = {
       gofumpt = true,
       codelenses = {
-        gc_details = false,
+        gc_details = true,
         generate = true,
         regenerate_cgo = true,
         run_govulncheck = true,
