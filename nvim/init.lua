@@ -30,18 +30,24 @@ cmp.setup({
   -- Other cmp configurations...
 })
 
--- Auto-command setup for Python files
-vim.api.nvim_exec(
-  [[
-    augroup FormatAutogroup
-        autocmd!
-        autocmd BufWritePost *.py execute '!isort ' . expand('%:p') | execute '!ruff check --fix ' . expand('%:p') | execute '!autoflake --remove-all-unused-imports ' . expand('%:p') | execute '!black ' . expand('%:p')
-    augroup END
-]],
-  true
-)
+require("dap-go").setup()
 
--- Ensure you have set completeopt to have a better completion experience
+lspconfig.ruff.setup({})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.py",
+  callback = function()
+    vim.lsp.buf.code_action({
+      context = {
+        only = {
+          "source.fixAll.ruff",
+        },
+      },
+      apply = true,
+    })
+    vim.lsp.buf.format({ async = false })
+  end,
+})
+
 vim.o.completeopt = "menu,menuone,noselect"
 
 -- Dont show leading whitespace dashes
@@ -65,7 +71,7 @@ vim.opt.smarttab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
-require("lspconfig").gopls.setup({
+lspconfig.gopls.setup({
   settings = {
     gopls = {
       gofumpt = true,
@@ -104,4 +110,3 @@ require("lspconfig").gopls.setup({
   },
   -- other options
 })
-
